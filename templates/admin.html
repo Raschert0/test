@@ -1,0 +1,38 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Admin panel</title>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.js"></script>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+  </head>
+  <body>
+    <script type="text/javascript">
+      $(document).ready(function() {
+      
+	      var socket = io.connect('https://18.196.4.151:8443');
+
+	      socket.on('connect', function() {
+			socket.send('User has connected!');
+	      });
+
+
+	      socket.on('message', function(msg) {
+		      $('#sec_id').css('background-color', msg);
+		      console.log('Color changed to '+msg);
+	      });
+
+	      $('#sec_button').on('click', function() {
+		      socket.send('NextSecLevel');
+	      });
+    });
+    </script>
+    {% if sec_level %}
+    <p>Security level: <span id="sec_id" style="background-color:{{sec_level}}">______</span> </p>
+    {% else %}
+    <p>Security level: NONE</p>
+    {% endif %}
+    <button id="sec_button">Change security level</button>
+  </body>
+</html>
+
+
